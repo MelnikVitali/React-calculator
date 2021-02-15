@@ -1,25 +1,57 @@
 import React, { useState } from 'react';
+import { evaluate} from 'mathjs';
 
 import Screen from "./Screen";
 import Keypad from "./Keypad";
 
 const Calculator = () => {
-    // const initialState = {
-    //     equation:'',
-    //     result: 0
-    // };
-    // const [state, setState] = useState(initialState);
 
-    const [lastOperation, setLastOperation] = useState('');
-    const [currentNumber, setCurrentNumber] = useState('0');
-    const [operatorFlag , setOperatorFlag] = useState(false);
-    const [decimalFlag, setDecimalFlag] = useState(false);
+    // Calculator's states
+    const [equation, setEquation] = useState('');
+    const [result, setResult] = useState('0');
+    const [operator, setOperator] = useState(null);
+
+    console.log('operator', operator);
+    console.log('result', result);
+    console.log('equation', equation);
+
+    const onDigitButtonClick = (value) => {
+        if (operator !== null) {
+            let newEquation = equation + value;
+            console.log('newEquation', newEquation);
+            const newResult = evaluate(newEquation);
+
+            setEquation(newEquation);
+            setResult(newResult);
+        } else {
+            setEquation(equation + value);
+            setOperator(value);
+        }
+    };
+    const onOperatorButtonClick = (value) => {
+        setEquation(equation + value);
+        setOperator(value);
+    };
+
+    const onEqualButtonClick = (value) => {
+        setEquation(equation + value);
+        setEquation(result);
+        setResult('');
+        setOperator(null);
+    };
+
+    const onAllClearButtonClick = () => {
+        setEquation('');
+        setResult(0);
+        setOperator(null);
+    };
+
+    const onClearEntryButtonClick = () => {
+        setEquation(equation.slice(0, -1));
+    };
 
     const onButtonPress = event => {
-        // let equation = state.equation;
         const buttonValue = event.target.innerHTML;
-
-        console.log('pressedButton', buttonValue);
 
         switch (buttonValue) {
             case '0':
@@ -31,92 +63,69 @@ const Calculator = () => {
             case '6':
             case '7':
             case '8':
-            case '9': {
-                if (currentNumber !== '0') {
-                    setCurrentNumber(currentNumber + buttonValue);
-                    setOperatorFlag(false);
-                } else {
-                    setCurrentNumber(buttonValue);
-                }
-                break;
-            }
+            case '9':
+                return onDigitButtonClick(buttonValue);
+
             case '*':
             case '+':
             case '-':
             case '/':
-            case '%': {
-                if (!operatorFlag) {
-                    setCurrentNumber(currentNumber + buttonValue);
-                    setOperatorFlag(buttonValue);
-                } else {
-                    const newNumber = currentNumber.slice(0, currentNumber.length - 1);
-                    setCurrentNumber(newNumber + buttonValue);
-                }
-                break;
-            }
-            case 'AC':
-                setLastOperation('');
-                setCurrentNumber('0');
-                break;
-            case '=':
-                setLastOperation(currentNumber);
-                const result = currentNumber.includes('.') ? eval(currentNumber).toFixed(2) : eval(currentNumber);
-                setCurrentNumber(result);
-
-                break;
             case '.':
-                if ((!currentNumber.includes('.') || buttonValue !== '.') && currentNumber.length < 8) {
-                    setCurrentNumber(`${(currentNumber + buttonValue).replace(/^0+/, '')}`);
-                }
-                if (!decimalFlag) {
-                    setCurrentNumber(currentNumber + '.');
-                    setDecimalFlag(true);
-                }
-                break;
-            case '←':
-                const newNumber = currentNumber.length > 1 ? currentNumber.slice(0, currentNumber.length - 1) : '0';
-                setCurrentNumber(newNumber);
-                break;
+            case '%':
+                return onOperatorButtonClick(buttonValue);
+
+            case 'AC':
+                return onAllClearButtonClick();
+
+            case '=':
+                return onEqualButtonClick(buttonValue);
+
+
+            // return onPointButtonClick();
+
+            case '×':
+                return onClearEntryButtonClick();
             default:
                 break;
         }
     };
 
-
-
-
-    //     if (pressedButton === 'C') return clear();
-    //     else if ((pressedButton >= '0' && pressedButton <= '9') || pressedButton === '.'){
-    //         equation += pressedButton;
-    //     }
-    //     else if (['+', '-', '*', '/', '%'].indexOf(pressedButton) !== -1){
-    //         equation += ' ' + pressedButton + ' ';
+    // const onButtonPress = event => {
+    //     let newEquation = equation;
+    //     const pressedButton = event.target.innerHTML;
+    //     console.log('pressedButton', pressedButton);
     //
-    //     }
+    //     if (pressedButton === 'AC') return clear();
+    //     else if ((pressedButton >= '0' && pressedButton <= '9') || pressedButton === '.') newEquation += pressedButton;
+    //     else if (['+', '-', '*', '/', '%'].indexOf(pressedButton) !== -1) newEquation += ' ' + pressedButton + ' ';
     //     else if (pressedButton === '=') {
     //         try {
-    //             // const evalResult = eval(equation);
-    //             const newResult = Number.isInteger(equation) ? equation : equation.toFixed(2);
-    //             setState({ ...state, result: newResult });
-    //             console.log('newResult', newResult);
+    //             const evalResult = eval(newEquation);
+    //             const result = Number.isInteger(evalResult) ? evalResult : evalResult.toFixed(2);
+    //             setResult(result);
+    //
     //         } catch (error) {
     //             alert('Invalid Mathematical Equation');
     //         }
     //     } else {
-    //         equation = equation.trim();
-    //         equation = equation.substr(0, equation.length - 1);
+    //         newEquation = equation.trim();
+    //         newEquation = equation.substr(0, equation.length - 1);
     //     }
-    //     setState({...state, equation:equation });
     //
-    //     console.log(state);
+    //     setEquation(newEquation);
     // }
+
     // const clear = () => {
-    //     setState({ equation: '', result: 0 });
+    //     setEquation('');
+    //     setResult(0);
     // }
 
     return (
         <main className="calculator" >
-            <Screen equation={currentNumber} result={lastOperation} />
+            <Screen
+                equation={equation}
+                result={result}
+            />
             <Keypad onButtonPress={onButtonPress} />
         </main >
     );
