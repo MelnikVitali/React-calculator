@@ -3,7 +3,7 @@
 https://github.com/MelnikVitali/React-calculator
 
 Deploy to netlify:
-https://vibrant-lichterman-6e376c.netlify.app/
+https://competent-lichterman-814b3f.netlify.app/
 
 Author: Vitalii Melnyk
 
