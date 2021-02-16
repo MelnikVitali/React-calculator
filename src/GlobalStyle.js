@@ -64,10 +64,10 @@ const GlobalStyle = createGlobalStyle`
     min-width: 360px;
     max-width: 395px;
     width: 100%;
-    padding:22px;
+    padding: 22px;
+    background-color: var(--background-color-calculator);
     border: var(--border-black);
     box-shadow: 0 32rem 64rem var(--shadow);
-    background-color: var(--background-color-calculator);
     display: flex;
     flex-direction: column;
   }
@@ -82,7 +82,6 @@ const GlobalStyle = createGlobalStyle`
     min-height: 100px;
     padding: 0 20px;
     overflow: hidden;
-    white-space: nowrap;
     background-color: var(--color-white);;
     color: var(--color-black);
     border: var(--border-black);
@@ -93,8 +92,11 @@ const GlobalStyle = createGlobalStyle`
 
   .computation-screen {
     min-height: 44px;
-    font-size: 33px;
+    font-size: 32px;
     font-weight: 600;
+    overflow: hidden;
+    word-break: break-word;
+    text-overflow: ellipsis;
     display: flex;
     justify-content: flex-end;
     align-items: center;
@@ -107,6 +109,14 @@ const GlobalStyle = createGlobalStyle`
     display: flex;
     justify-content: flex-end;
     align-items: center;
+
+    &__zero {
+      font-size: 32px;
+      font-weight: 600;
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+    }
   }
 
   /* Keypad */
@@ -154,7 +164,7 @@ const GlobalStyle = createGlobalStyle`
 
     &:active {
       transform: scale(.95);
-    }.
+    }
   }
 
   .btn-large {
@@ -174,16 +184,18 @@ const GlobalStyle = createGlobalStyle`
     font-size: 12px;
     display: flex;
     align-items: center;
-    justify-content: flex-end;
-    padding-right: 10px;
+    justify-content: center;
   }
 
   .arrow_box {
     position: relative;
-    padding-right: 7px;
+    width: 100%;
+    height: 100%;
+    padding-left: 8px;
     font-size: 29px;
     display: flex;
     align-items: center;
+    justify-content: center;
   }
 
   .arrow_box:before {
@@ -191,8 +203,8 @@ const GlobalStyle = createGlobalStyle`
     width: 19px;
     height: 19px;
     position: absolute;
-    top: 12px;
-    right: 22px;
+    top: 23px;
+    right: 33px;
     border-top: var(--border-gray);
     border-left: var(--border-gray);
     transform: rotateZ(-45deg);
@@ -201,8 +213,8 @@ const GlobalStyle = createGlobalStyle`
   .arrow_box:after {
     content: "";
     position: absolute;
-    top: 8px;
-    right: -3px;
+    top: 19px;
+    right: 9px;
     width: 34px;
     height: 27px;
     border: var(--border-gray);

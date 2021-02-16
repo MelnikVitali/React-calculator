@@ -1,53 +1,118 @@
 import React, { useState } from 'react';
-import { evaluate} from 'mathjs';
 
-import Screen from "./Screen";
-import Keypad from "./Keypad";
+import Screen from './Screen';
+import Keypad from './Keypad';
+
+import { calculate } from '../../utils/calculate';
 
 const Calculator = () => {
-
     // Calculator's states
     const [equation, setEquation] = useState('');
-    const [result, setResult] = useState('0');
-    const [operator, setOperator] = useState(null);
-
-    console.log('operator', operator);
-    console.log('result', result);
-    console.log('equation', equation);
+    const [result, setResult] = useState(0);
 
     const onDigitButtonClick = (value) => {
-        if (operator !== null) {
+        if ((equation === '0' && value === '0')) {
+            return false;
+        }
+
+        if ((/^[*+-\/]/.test(equation))) {
+            setEquation(equation + value);
+            setResult(value)
+        } else {
             let newEquation = equation + value;
-            console.log('newEquation', newEquation);
-            const newResult = evaluate(newEquation);
+            const newResult = calculate(newEquation);
 
             setEquation(newEquation);
             setResult(newResult);
-        } else {
-            setEquation(equation + value);
-            setOperator(value);
         }
     };
+
     const onOperatorButtonClick = (value) => {
-        setEquation(equation + value);
-        setOperator(value);
+        let newEquation = String(equation);
+
+        if ((/^[*+-\/]/.test(newEquation.slice(-1)))) {
+            return false;
+        }
+
+        if (equation === '') {
+            newEquation += '0';
+        }
+
+        setEquation(newEquation + value);
     };
 
-    const onEqualButtonClick = (value) => {
-        setEquation(equation + value);
-        setEquation(result);
-        setResult('');
-        setOperator(null);
+    const onPercentButtonClick = () => {
+        if (!equation) {
+            return false;
+        }
+
+        const arrNumbersForEquation = equation.match(/\d+/g);
+        const afterNumber = arrNumbersForEquation[arrNumbersForEquation.length - 1];
+        const percentOfNumber = String(Number(afterNumber) / 100);
+        const indexAfterNumber = equation.lastIndexOf(afterNumber);
+        const newEquation = equation.slice(0, indexAfterNumber);
+        const calculatePrevResult = calculate(newEquation);
+        const calculateNewResult = String(Number(calculatePrevResult) * percentOfNumber);
+
+        if ((/^[+-]/.test(newEquation.slice(-1)))) {
+            const newResult = newEquation + calculateNewResult;
+
+            setEquation(newResult);
+            setResult(calculate(newResult));
+        } else if ((/^[*\/]/.test(newEquation.slice(-1)))) {
+            const newResult = newEquation + percentOfNumber;
+
+            setEquation(newResult);
+            setResult(calculate(newResult));
+        } else {
+            return false;
+        }
+    }
+
+    const onPointButtonClick = () => {
+        let newEquation = equation;
+
+        if (newEquation === '') {
+            newEquation = newEquation + '0'
+        }
+        if ((/^[*+\/]/.test(newEquation.slice(-1)))) {
+            newEquation = newEquation + '0'
+        }
+        if ((/^[.]/.test(newEquation.slice(-1)))) {
+            return false;
+        }
+
+        setEquation(newEquation + '.');
+        setResult(calculate(newEquation + '.'));
+    };
+
+    const onEqualButtonClick = () => {
+        if (typeof result !== 'string') {
+            setEquation(String(result));
+            setResult('');
+        }
     };
 
     const onAllClearButtonClick = () => {
         setEquation('');
         setResult(0);
-        setOperator(null);
     };
 
     const onClearEntryButtonClick = () => {
-        setEquation(equation.slice(0, -1));
+        const newEquation = equation;
+
+        if (equation.trim().length <= 1) {
+            setResult(0);
+            setEquation('');
+        } else {
+            newEquation.split('')
+                .slice(0, newEquation.length - 1)
+                .join('');
+
+            setEquation(newEquation.slice(0, -1));
+            setResult(calculate(newEquation.slice(0, -1)));
+        }
+
     };
 
     const onButtonPress = event => {
@@ -70,9 +135,14 @@ const Calculator = () => {
             case '+':
             case '-':
             case '/':
-            case '.':
-            case '%':
+
                 return onOperatorButtonClick(buttonValue);
+
+            case '%':
+                return onPercentButtonClick();
+
+            case '.':
+                return onPointButtonClick();
 
             case 'AC':
                 return onAllClearButtonClick();
@@ -80,45 +150,13 @@ const Calculator = () => {
             case '=':
                 return onEqualButtonClick(buttonValue);
 
-
-            // return onPointButtonClick();
-
             case '×':
                 return onClearEntryButtonClick();
+
             default:
                 break;
         }
     };
-
-    // const onButtonPress = event => {
-    //     let newEquation = equation;
-    //     const pressedButton = event.target.innerHTML;
-    //     console.log('pressedButton', pressedButton);
-    //
-    //     if (pressedButton === 'AC') return clear();
-    //     else if ((pressedButton >= '0' && pressedButton <= '9') || pressedButton === '.') newEquation += pressedButton;
-    //     else if (['+', '-', '*', '/', '%'].indexOf(pressedButton) !== -1) newEquation += ' ' + pressedButton + ' ';
-    //     else if (pressedButton === '=') {
-    //         try {
-    //             const evalResult = eval(newEquation);
-    //             const result = Number.isInteger(evalResult) ? evalResult : evalResult.toFixed(2);
-    //             setResult(result);
-    //
-    //         } catch (error) {
-    //             alert('Invalid Mathematical Equation');
-    //         }
-    //     } else {
-    //         newEquation = equation.trim();
-    //         newEquation = equation.substr(0, equation.length - 1);
-    //     }
-    //
-    //     setEquation(newEquation);
-    // }
-
-    // const clear = () => {
-    //     setEquation('');
-    //     setResult(0);
-    // }
 
     return (
         <main className="calculator" >

@@ -1,16 +1,16 @@
 import React from 'react';
 
-import KeypadRow from "./KeypadRow";
-import Button from "../../../components/Button";
-import LargeButton from "../../../components/Button/LargeButton";
-import ClearEntryButton from "../../../components/Button/ClearEntryButton";
+import KeypadRow from './KeypadRow';
+import Button from '../../../components/Button';
+import LargeButton from '../../../components/Button/LargeButton';
+import ClearEntryButton from '../../../components/Button/ClearEntryButton';
 
 const Keypad = ({ onButtonPress }) => {
     return (
         <section className="keypad" >
             <KeypadRow >
                 <Button type="primary" onButtonPress={onButtonPress} >AC</Button >
-                <ClearEntryButton onButtonPress={onButtonPress}/>
+                <ClearEntryButton onButtonPress={onButtonPress} />
                 <Button onButtonPress={onButtonPress} >%</Button >
                 <Button type="operator" onButtonPress={onButtonPress} >/</Button >
             </KeypadRow >

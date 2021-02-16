@@ -1,3 +1,42 @@
+# NoCode Developer - test task
+
+https://github.com/MelnikVitali/React-calculator
+
+Deploy to netlify:
+https://vibrant-lichterman-6e376c.netlify.app/
+
+Author: Vitalii Melnyk
+
+## Technology Stack
+
+- React with React Hooks 
+
+- React styles & libraries: Styled-components
+
+-------------------------------------------
+## Technical Requirements
+Требуется создать страницу с функциональностью калькулятора.
+Дизайн страницы должен следовать следующему лейауту:
+
+![img.png](img.png)
+
+Минимально требуемый функционал:
+Операции +, -, *, /
+Вычисление результата по нажатию =
+При нажатии = результат вычисления становится основным значением ввода. 
+Например для изображения выше, если нажать =, то 7 уходит, а вместо “5+2”
+появляется 7 как основное значение ввода. Дальнейший ввод других операций 
+применяется к 7. Ввод какой либо цифры, стирает 7 и начинается новая операция.
+
+Бонусные имплементация:
+Операции с процентными значениями.
+Например:
+100 + 20% (результат 120)
+Операции с десятичной точкой:
+5.2 + 1.3 (результат 6.5)
+Имплементация кнопки стирания
+___________________________________________
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
