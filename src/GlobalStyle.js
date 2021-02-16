@@ -11,7 +11,6 @@ const GlobalStyle = createGlobalStyle`
   }
 
   html {
-    //font-size: 62.5%;
     font-family: 'Open Sans', sans-serif;
   }
 
@@ -22,7 +21,7 @@ const GlobalStyle = createGlobalStyle`
   /* Variables */
   :root {
     --color-white: #fff;
-    --color-light-white: #eee;
+    --color-light-white: #fafafa;
 
     --color-gray: #CCCCCC;
     --color-dark-gray: #808080;
@@ -62,7 +61,7 @@ const GlobalStyle = createGlobalStyle`
   /* Calculator */
   .calculator {
     min-width: 360px;
-    max-width: 395px;
+    max-width: 380px;
     width: 100%;
     padding: 22px;
     background-color: var(--background-color-calculator);
@@ -82,7 +81,7 @@ const GlobalStyle = createGlobalStyle`
     min-height: 100px;
     padding: 0 20px;
     overflow: hidden;
-    background-color: var(--color-white);;
+    background-color: var( --color-light-white);;
     color: var(--color-black);
     border: var(--border-black);
     display: flex;
@@ -140,7 +139,7 @@ const GlobalStyle = createGlobalStyle`
     font-size: 18px;
     font-weight: 700;
     font-family: inherit;
-    background-color: var(--color-white);
+    background-color: var( --color-light-white);
     border: var(--border-black);
     outline: none;
     cursor: pointer;
