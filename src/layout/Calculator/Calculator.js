@@ -76,6 +76,7 @@ const Calculator = () => {
 
     const onPointButtonClick = () => {
         let newEquation = equation;
+
         if (pressEquals) {
             newEquation = '0';
             setResult(0);
