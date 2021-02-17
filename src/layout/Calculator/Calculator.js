@@ -9,6 +9,7 @@ const Calculator = () => {
     // Calculator's states
     const [equation, setEquation] = useState('');
     const [result, setResult] = useState(0);
+    const [pressEquals, setPressEquals] = useState(false);
 
     const onDigitButtonClick = (value) => {
         if ((equation === '0' && value === '0')) {
@@ -17,13 +18,18 @@ const Calculator = () => {
 
         if ((/^[*+-\/]/.test(equation))) {
             setEquation(equation + value);
-            setResult(value)
+            setResult(value);
+        } else if (pressEquals && equation.length <= 1) {
+            setEquation(value);
+            setResult(Number(value));
+            setPressEquals(false);
         } else {
             let newEquation = equation + value;
             const newResult = calculate(newEquation);
 
             setEquation(newEquation);
             setResult(newResult);
+            setPressEquals(false);
         }
     };
 
@@ -90,6 +96,7 @@ const Calculator = () => {
         if (typeof result !== 'string') {
             setEquation(String(result));
             setResult('');
+            setPressEquals(true);
         }
     };
 
@@ -112,7 +119,6 @@ const Calculator = () => {
             setEquation(newEquation.slice(0, -1));
             setResult(calculate(newEquation.slice(0, -1)));
         }
-
     };
 
     const onButtonPress = event => {
