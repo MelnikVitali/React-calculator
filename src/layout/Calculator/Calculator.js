@@ -16,10 +16,7 @@ const Calculator = () => {
             return false;
         }
 
-        if ((/^[*+-\/]/.test(equation))) {
-            setEquation(equation + value);
-            setResult(value);
-        } else if (pressEquals && equation.length <= 1) {
+        if (pressEquals) {
             setEquation(value);
             setResult(Number(value));
             setPressEquals(false);
@@ -34,7 +31,7 @@ const Calculator = () => {
     };
 
     const onOperatorButtonClick = (value) => {
-        let newEquation = String(equation);
+        let newEquation = equation;
 
         if ((/^[*+-\/]/.test(newEquation.slice(-1)))) {
             return false;
@@ -44,6 +41,7 @@ const Calculator = () => {
             newEquation += '0';
         }
 
+        setPressEquals(false);
         setEquation(newEquation + value);
     };
 
@@ -65,21 +63,29 @@ const Calculator = () => {
 
             setEquation(newResult);
             setResult(calculate(newResult));
+            setPressEquals(false);
         } else if ((/^[*\/]/.test(newEquation.slice(-1)))) {
             const newResult = newEquation + percentOfNumber;
 
             setEquation(newResult);
             setResult(calculate(newResult));
+            setPressEquals(false);
         } else {
             return false;
         }
-    }
+    };
 
     const onPointButtonClick = () => {
         let newEquation = equation;
 
+        if (pressEquals) {
+            newEquation = '0';
+            setResult(0);
+            setPressEquals(false);
+        }
+
         if (newEquation === '') {
-            newEquation = newEquation + '0'
+            newEquation = newEquation + '0';
         }
         if ((/^[*+\/]/.test(newEquation.slice(-1)))) {
             newEquation = newEquation + '0'
@@ -90,6 +96,7 @@ const Calculator = () => {
 
         setEquation(newEquation + '.');
         setResult(calculate(newEquation + '.'));
+        setPressEquals(false);
     };
 
     const onEqualButtonClick = () => {
@@ -103,6 +110,7 @@ const Calculator = () => {
     const onAllClearButtonClick = () => {
         setEquation('');
         setResult(0);
+        setPressEquals(false);
     };
 
     const onClearEntryButtonClick = () => {
@@ -111,6 +119,7 @@ const Calculator = () => {
         if (equation.trim().length <= 1) {
             setResult(0);
             setEquation('');
+            setPressEquals(false);
         } else {
             newEquation.split('')
                 .slice(0, newEquation.length - 1)
@@ -118,6 +127,7 @@ const Calculator = () => {
 
             setEquation(newEquation.slice(0, -1));
             setResult(calculate(newEquation.slice(0, -1)));
+            setPressEquals(false);
         }
     };
 
