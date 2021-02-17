@@ -26,6 +26,7 @@ const Calculator = () => {
 
             setEquation(newEquation);
             setResult(newResult);
+            setPressEquals(false);
         }
     };
 
